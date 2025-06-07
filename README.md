@@ -18,7 +18,6 @@
 ## 🚀 Live Preview
 
 > 🔗 [View Portfolio Live](https://ahmadfaik.netlify.app/)  
-(*Replace this with your actual link*)
 
 ---
 
