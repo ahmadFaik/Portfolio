@@ -1337,7 +1337,7 @@ span {
   }
 
   .home {
-    flex-direction: column;
+    flex-direction: column-reverse; /* Changed from 'column' to 'column-reverse' */
     text-align: center;
     gap: 3rem;
   }
