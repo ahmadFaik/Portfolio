@@ -2,16 +2,49 @@
 const menuIcon = document.querySelector("#menu-icon")
 const navbar = document.querySelector(".navbar")
 
-menuIcon.onclick = () => {
-  menuIcon.classList.toggle("bx-x")
-  navbar.classList.toggle("active")
+if (menuIcon && navbar) {
+  menuIcon.onclick = () => {
+    menuIcon.classList.toggle("bx-x")
+    navbar.classList.toggle("active")
+  }
+}
+
+// Theme Toggle Functionality
+const themeToggle = document.querySelector("#themeToggle")
+const themeIcon = document.querySelector("#themeIcon")
+const body = document.body
+
+// Load saved theme or detect system preference
+const savedTheme = localStorage.getItem("theme")
+const systemPrefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches
+
+if (savedTheme === "light" || (!savedTheme && !systemPrefersDark)) {
+  body.classList.add("light-mode")
+  if (themeIcon) {
+    themeIcon.classList.replace("bx-sun", "bx-moon")
+  }
+}
+
+// Theme toggle event
+if (themeToggle && themeIcon) {
+  themeToggle.addEventListener("click", () => {
+    body.classList.toggle("light-mode")
+
+    if (body.classList.contains("light-mode")) {
+      themeIcon.classList.replace("bx-sun", "bx-moon")
+      localStorage.setItem("theme", "light")
+    } else {
+      themeIcon.classList.replace("bx-moon", "bx-sun")
+      localStorage.setItem("theme", "dark")
+    }
+  })
 }
 
 // Sections active link
 const sections = document.querySelectorAll("section")
 const navlinks = document.querySelectorAll("header nav a")
 
-window.onscroll = () => {
+function updateActiveLink() {
   sections.forEach((sec) => {
     const top = window.scrollY
     const offset = sec.offsetTop - 150
@@ -26,18 +59,26 @@ window.onscroll = () => {
       if (activeLink) activeLink.classList.add("active")
     }
   })
+}
+
+window.onscroll = () => {
+  updateActiveLink()
 
   // Sticky header
   const header = document.querySelector("header")
-  header.classList.toggle("sticky", window.scrollY > 100)
+  if (header) {
+    header.classList.toggle("sticky", window.scrollY > 100)
+  }
 
-  // Remove toggle icon and navbar when click navbar links (scroll)
-  menuIcon.classList.remove("bx-x")
-  navbar.classList.remove("active")
+  // Remove toggle icon and navbar when scrolling
+  if (menuIcon && navbar) {
+    menuIcon.classList.remove("bx-x")
+    navbar.classList.remove("active")
+  }
 }
 
 // Scroll reveal
-const ScrollReveal = window.ScrollReveal // Declare ScrollReveal variable
+const ScrollReveal = window.ScrollReveal
 if (ScrollReveal) {
   ScrollReveal({
     reset: true,
@@ -50,21 +91,33 @@ if (ScrollReveal) {
   ScrollReveal().reveal(".home-img, .services-container, .portfolio-box, .contact form", { origin: "bottom" })
   ScrollReveal().reveal(".home-content h1, .about-img", { origin: "left" })
   ScrollReveal().reveal(".home-content p, .about-content", { origin: "right" })
+
+  // Add skills section to scroll reveal
+  ScrollReveal().reveal(".skills-category, .expertise-card", {
+    origin: "bottom",
+    distance: "50px",
+    duration: 1000,
+    delay: 200,
+    interval: 200,
+  })
 }
 
 // Typed.js animation - Initialize after DOM is loaded
 document.addEventListener("DOMContentLoaded", () => {
   // Wait a bit for libraries to load
   setTimeout(() => {
-    const Typed = window.Typed // Declare Typed variable
+    const Typed = window.Typed
     if (Typed) {
-      const typed = new Typed(".multiple-text", {
-        strings: ["Data Scientist", "Data Analyst", "ML Engineer", "BI Specialist"],
-        typeSpeed: 100,
-        backSpeed: 100,
-        backDelay: 1000,
-        loop: true,
-      })
+      const multipleTextElement = document.querySelector(".multiple-text")
+      if (multipleTextElement) {
+        const typed = new Typed(".multiple-text", {
+          strings: ["Data Scientist", "Data Analyst", "ML Engineer", "BI Specialist"],
+          typeSpeed: 100,
+          backSpeed: 100,
+          backDelay: 1000,
+          loop: true,
+        })
+      }
     } else {
       // Fallback if Typed.js fails to load
       const element = document.querySelector(".multiple-text")
@@ -99,16 +152,39 @@ document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
 })
 
 // Contact form submission
-const contactForm = document.querySelector(".contact-form")
+const contactForm = document.querySelector("#contactForm")
 if (contactForm) {
   contactForm.addEventListener("submit", function (e) {
     e.preventDefault()
+
     // Get form data
     const formData = new FormData(this)
     const formObject = {}
     formData.forEach((value, key) => {
       formObject[key] = value
     })
+
+    // Validate form
+    const requiredFields = ["fullName", "email", "subject", "message"]
+    let isValid = true
+
+    requiredFields.forEach((field) => {
+      if (!formObject[field] || formObject[field].trim() === "") {
+        isValid = false
+      }
+    })
+
+    if (!isValid) {
+      showNotification("Please fill in all required fields.", "error")
+      return
+    }
+
+    // Email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (!emailRegex.test(formObject.email)) {
+      showNotification("Please enter a valid email address.", "error")
+      return
+    }
 
     // Show success message
     showNotification("Thank you for your message! I will get back to you soon.", "success")
@@ -121,8 +197,12 @@ if (contactForm) {
   })
 }
 
-// Notification System
+// Enhanced Notification System
 function showNotification(message, type = "info") {
+  // Remove existing notifications
+  const existingNotifications = document.querySelectorAll(".notification")
+  existingNotifications.forEach((notification) => notification.remove())
+
   const notification = document.createElement("div")
   notification.className = `notification ${type}`
   notification.innerHTML = `
@@ -133,26 +213,31 @@ function showNotification(message, type = "info") {
   `
 
   // Add notification styles
+  const bgColor = type === "success" ? "#4CAF50" : type === "error" ? "#f44336" : "#2196F3"
   notification.style.cssText = `
     position: fixed;
     top: 20px;
     right: 20px;
-    background: ${type === "success" ? "#4CAF50" : "#2196F3"};
+    background: ${bgColor};
     color: white;
     padding: 1rem 2rem;
     border-radius: 0.5rem;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     z-index: 1000;
     animation: slideIn 0.3s ease;
+    max-width: 400px;
+    word-wrap: break-word;
   `
 
   document.body.appendChild(notification)
 
   // Close button functionality
   const closeBtn = notification.querySelector(".notification-close")
-  closeBtn.addEventListener("click", () => {
-    notification.remove()
-  })
+  if (closeBtn) {
+    closeBtn.addEventListener("click", () => {
+      notification.remove()
+    })
+  }
 
   // Auto remove after 5 seconds
   setTimeout(() => {
@@ -215,7 +300,9 @@ const observer = new IntersectionObserver((entries) => {
 
 // Observe elements for fade-in animation
 document.addEventListener("DOMContentLoaded", () => {
-  const elementsToAnimate = document.querySelectorAll(".services-box, .portfolio-box, .education-content, .info-box")
+  const elementsToAnimate = document.querySelectorAll(
+    ".services-box, .portfolio-box, .education-content, .experience-content, .info-box, .skills-category, .expertise-card",
+  )
   elementsToAnimate.forEach((el) => {
     el.classList.add("fade-in")
     observer.observe(el)
@@ -285,76 +372,120 @@ function throttle(func, wait) {
 }
 
 // Apply throttling to scroll event
-window.onscroll = throttle(window.onscroll, 16) // ~60fps
+const throttledScroll = throttle(() => {
+  updateActiveLink()
+
+  const header = document.querySelector("header")
+  if (header) {
+    header.classList.toggle("sticky", window.scrollY > 100)
+  }
+
+  if (menuIcon && navbar) {
+    menuIcon.classList.remove("bx-x")
+    navbar.classList.remove("active")
+  }
+}, 16) // ~60fps
+
+window.addEventListener("scroll", throttledScroll)
 
 // Enhanced Loading Screen with Progress Animation
 window.addEventListener("load", () => {
   const loadingScreen = document.getElementById("loadingScreen")
   const loadingPercentage = document.getElementById("loadingPercentage")
 
-  // Simulate loading progress
-  let progress = 0
-  const progressInterval = setInterval(() => {
-    progress += Math.random() * 15 + 5 // Random increment between 5-20
-    if (progress > 100) progress = 100
+  if (loadingScreen && loadingPercentage) {
+    // Simulate loading progress
+    let progress = 0
+    const progressInterval = setInterval(() => {
+      progress += Math.random() * 15 + 5 // Random increment between 5-20
+      if (progress > 100) progress = 100
 
-    loadingPercentage.textContent = Math.floor(progress) + "%"
+      loadingPercentage.textContent = Math.floor(progress) + "%"
 
-    if (progress >= 100) {
-      clearInterval(progressInterval)
+      if (progress >= 100) {
+        clearInterval(progressInterval)
 
-      // Wait a moment then fade out
-      setTimeout(() => {
-        loadingScreen.classList.add("fade-out")
-
-        // Remove from DOM after transition
+        // Wait a moment then fade out
         setTimeout(() => {
-          loadingScreen.style.display = "none"
-        }, 800)
-      }, 500)
+          loadingScreen.classList.add("fade-out")
+
+          // Remove from DOM after transition
+          setTimeout(() => {
+            loadingScreen.style.display = "none"
+          }, 800)
+        }, 500)
+      }
+    }, 100)
+  }
+})
+
+// Portfolio Filter Functionality
+document.addEventListener("DOMContentLoaded", () => {
+  const filterBtns = document.querySelectorAll(".filter-btn")
+  const portfolioCards = document.querySelectorAll(".portfolio-card")
+
+  // Initialize filter functionality
+  if (filterBtns.length > 0 && portfolioCards.length > 0) {
+    filterBtns.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        // Remove active class from all buttons
+        filterBtns.forEach((b) => b.classList.remove("active"))
+        // Add active class to clicked button
+        btn.classList.add("active")
+
+        const filterValue = btn.getAttribute("data-filter")
+
+        portfolioCards.forEach((card) => {
+          const cardCategories = card.getAttribute("data-category")
+
+          if (filterValue === "all" || cardCategories.includes(filterValue)) {
+            card.style.display = "block"
+            card.style.opacity = "0"
+            card.style.transform = "translateY(20px)"
+
+            // Animate card appearance
+            setTimeout(() => {
+              card.style.transition = "all 0.5s ease"
+              card.style.opacity = "1"
+              card.style.transform = "translateY(0)"
+            }, 100)
+          } else {
+            card.style.transition = "all 0.3s ease"
+            card.style.opacity = "0"
+            card.style.transform = "translateY(-20px)"
+
+            setTimeout(() => {
+              card.style.display = "none"
+            }, 300)
+          }
+        })
+      })
+    })
+
+    // Initialize with "All" filter active
+    const allBtn = document.querySelector('.filter-btn[data-filter="all"]')
+    if (allBtn) {
+      allBtn.click()
     }
-  }, 100)
+  }
 })
 
 // Initialize particles on load
 window.addEventListener("load", createParticles)
 
-// Skills Animation
-function animateSkills() {
-  const skillBars = document.querySelectorAll(".skill-progress")
-  skillBars.forEach((bar) => {
-    const progress = bar.getAttribute("data-progress")
-    bar.style.width = progress + "%"
-  })
-}
+// Skills Section Hover Effects
+document.addEventListener("DOMContentLoaded", () => {
+  const skillTags = document.querySelectorAll(".skill-tag")
 
-// Initialize skills animation when education section is visible
-const educationSection = document.querySelector("#education")
-if (educationSection) {
-  const educationObserver = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        animateSkills()
-        educationObserver.unobserve(entry.target)
-      }
+  skillTags.forEach((tag) => {
+    tag.addEventListener("mouseenter", function () {
+      this.style.transform = "translateY(-2px) scale(1.05)"
+    })
+
+    tag.addEventListener("mouseleave", function () {
+      this.style.transform = "translateY(0) scale(1)"
     })
   })
-  educationObserver.observe(educationSection)
-}
-
-// Dark mode toggle (optional feature)
-function toggleDarkMode() {
-  document.body.classList.toggle("light-mode")
-  const isDarkMode = !document.body.classList.contains("light-mode")
-  localStorage.setItem("darkMode", isDarkMode)
-}
-
-// Load saved theme preference
-document.addEventListener("DOMContentLoaded", () => {
-  const savedTheme = localStorage.getItem("darkMode")
-  if (savedTheme === "false") {
-    document.body.classList.add("light-mode")
-  }
 })
 
 // Preloader for images
@@ -371,8 +502,59 @@ function preloadImages() {
   images.forEach((src) => {
     const img = new Image()
     img.src = src
+    img.onerror = () => {
+      console.warn(`Failed to load image: ${src}`)
+    }
   })
 }
 
 // Initialize image preloading
 document.addEventListener("DOMContentLoaded", preloadImages)
+
+// Footer animations
+document.addEventListener("DOMContentLoaded", () => {
+  const footerElements = document.querySelectorAll(".footer-brand, .footer-column")
+
+  const footerObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry, index) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => {
+            entry.target.style.opacity = "1"
+            entry.target.style.transform = "translateY(0)"
+          }, index * 200)
+        }
+      })
+    },
+    { threshold: 0.1 },
+  )
+
+  footerElements.forEach((el) => {
+    el.style.opacity = "0"
+    el.style.transform = "translateY(30px)"
+    el.style.transition = "all 0.6s ease"
+    footerObserver.observe(el)
+  })
+})
+
+// Error handling for external libraries
+window.addEventListener("error", (e) => {
+  console.warn("External library error:", e.message)
+})
+
+// Handle system theme changes
+window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", (e) => {
+  if (!localStorage.getItem("theme")) {
+    if (e.matches) {
+      body.classList.remove("light-mode")
+      if (themeIcon) {
+        themeIcon.classList.replace("bx-moon", "bx-sun")
+      }
+    } else {
+      body.classList.add("light-mode")
+      if (themeIcon) {
+        themeIcon.classList.replace("bx-sun", "bx-moon")
+      }
+    }
+  }
+})
