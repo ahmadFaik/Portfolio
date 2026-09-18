@@ -1,12 +1,81 @@
 // Toggle icon navbar
-const menuIcon = document.querySelector("#menu-icon")
-const navbar = document.querySelector(".navbar")
+// NOTE: the markup uses `#menuToggle` (the button) with an inner `#menuIcon`
+// (the <i> glyph) and `.nav-links` (the collapsible link list) — these used
+// to be mismatched against a non-existent `#menu-icon` / `.navbar`, which
+// silently disabled the mobile menu entirely.
+const menuToggle = document.querySelector("#menuToggle")
+const menuIconEl = document.querySelector("#menuIcon")
+const navLinks = document.querySelector(".nav-links")
 
-if (menuIcon && navbar) {
-  menuIcon.onclick = () => {
-    menuIcon.classList.toggle("bx-x")
-    navbar.classList.toggle("active")
+function closeMobileMenu() {
+  if (!menuToggle || !navLinks) return
+  navLinks.classList.remove("active")
+  menuToggle.setAttribute("aria-expanded", "false")
+  if (menuIconEl) {
+    menuIconEl.classList.add("bx-menu")
+    menuIconEl.classList.remove("bx-x")
   }
+}
+
+if (menuToggle && navLinks) {
+  menuToggle.setAttribute("aria-expanded", "false")
+
+  menuToggle.addEventListener("click", (e) => {
+    e.stopPropagation()
+    const isOpen = navLinks.classList.toggle("active")
+    menuToggle.setAttribute("aria-expanded", String(isOpen))
+    if (menuIconEl) {
+      menuIconEl.classList.toggle("bx-x", isOpen)
+      menuIconEl.classList.toggle("bx-menu", !isOpen)
+    }
+  })
+
+  // Close the menu once a link is chosen
+  navLinks.querySelectorAll("a").forEach((link) => {
+    link.addEventListener("click", closeMobileMenu)
+  })
+
+  // Close when tapping/clicking outside the nav pill
+  document.addEventListener("click", (e) => {
+    if (!navLinks.classList.contains("active")) return
+    const pill = document.querySelector(".navbar-pill")
+    if (pill && !pill.contains(e.target)) closeMobileMenu()
+  })
+
+  // Close on Escape for keyboard users
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") closeMobileMenu()
+  })
+}
+
+// Certificate Carousel Scroll Buttons
+const certGrid = document.querySelector("#certGrid")
+const certPrev = document.querySelector("#certPrev")
+const certNext = document.querySelector("#certNext")
+ 
+if (certGrid && certPrev && certNext) {
+  const scrollByCard = () => {
+    const card = certGrid.querySelector(".cert-grid-card")
+    return card ? card.offsetWidth + 32 : 300 // card width + gap
+  }
+ 
+  const updateCertButtons = () => {
+    const maxScroll = certGrid.scrollWidth - certGrid.clientWidth - 2
+    certPrev.disabled = certGrid.scrollLeft <= 0
+    certNext.disabled = certGrid.scrollLeft >= maxScroll
+  }
+ 
+  certPrev.addEventListener("click", () => {
+    certGrid.scrollBy({ left: -scrollByCard(), behavior: "smooth" })
+  })
+ 
+  certNext.addEventListener("click", () => {
+    certGrid.scrollBy({ left: scrollByCard(), behavior: "smooth" })
+  })
+ 
+  certGrid.addEventListener("scroll", updateCertButtons)
+  window.addEventListener("resize", updateCertButtons)
+  updateCertButtons()
 }
 
 // Theme Toggle Functionality
@@ -14,31 +83,37 @@ const themeToggle = document.querySelector("#themeToggle")
 const themeIcon = document.querySelector("#themeIcon")
 const body = document.body
 
-// Load saved theme or detect system preference
-const savedTheme = localStorage.getItem("theme")
-const systemPrefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches
-
-if (savedTheme === "light" || (!savedTheme && !systemPrefersDark)) {
-  body.classList.add("light-mode")
-  if (themeIcon) {
-    themeIcon.classList.replace("bx-sun", "bx-moon")
-  }
+// The "light-mode" class itself is applied by the inline script at the
+// top of <body> (see index.html), before first paint, to avoid a
+// dark-mode flash. Just sync the toggle icon to whatever it decided.
+if (body.classList.contains("light-mode") && themeIcon) {
+  themeIcon.classList.replace("bx-sun", "bx-moon")
 }
 
-// Theme toggle event
-if (themeToggle && themeIcon) {
-  themeToggle.addEventListener("click", () => {
-    body.classList.toggle("light-mode")
+// if (savedTheme === "light" || (!savedTheme && !systemPrefersDark)) {
+//   body.classList.add("light-mode")
+//   if (themeIcon) {
+//     themeIcon.classList.replace("bx-sun", "bx-moon")
+//   }
+// }
 
-    if (body.classList.contains("light-mode")) {
-      themeIcon.classList.replace("bx-sun", "bx-moon")
-      localStorage.setItem("theme", "light")
-    } else {
-      themeIcon.classList.replace("bx-moon", "bx-sun")
-      localStorage.setItem("theme", "dark")
-    }
-  })
+/* =============================================
+   TYPED.JS HERO ROLE ROTATOR (English only)
+   ============================================= */
+function initializeTyped() {
+  if (!window.Typed) return;
+  new window.Typed(".multiple-text", {
+    strings: ["Data Analyst", "Data Scientist", "Business Analyst"],
+    typeSpeed: 100,
+    backSpeed: 100,
+    backDelay: 1000,
+    loop: true,
+  });
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+  initializeTyped();
+});
 
 // Sections active link
 const sections = document.querySelectorAll("section")
@@ -71,10 +146,7 @@ window.onscroll = () => {
   }
 
   // Remove toggle icon and navbar when scrolling
-  if (menuIcon && navbar) {
-    menuIcon.classList.remove("bx-x")
-    navbar.classList.remove("active")
-  }
+  closeMobileMenu()
 }
 
 // Scroll reveal
@@ -87,7 +159,21 @@ if (ScrollReveal) {
     delay: 200,
   })
 
-  ScrollReveal().reveal(".home-content, .heading", { origin: "top" })
+  ScrollReveal().reveal(".home-content", { origin: "top" })
+
+  // Section headings ("My Project", "Contact Me", ...) get a fast, one-time
+  // reveal so they're visible right away when jumping in via the nav bar —
+  // the shared 2000ms/200ms timing (plus reset:true replaying it on every
+  // re-entry) made them look like they hadn't loaded until the reveal
+  // animation happened to finish a couple seconds later.
+  ScrollReveal().reveal(".heading", {
+    origin: "top",
+    distance: "30px",
+    duration: 1000,
+    delay: 100,
+    reset: false,
+  })
+
   ScrollReveal().reveal(".home-img, .services-container, .portfolio-box, .contact form", { origin: "bottom" })
   ScrollReveal().reveal(".home-content h1, .about-img", { origin: "left" })
   ScrollReveal().reveal(".home-content p, .about-content", { origin: "right" })
@@ -101,41 +187,6 @@ if (ScrollReveal) {
     interval: 200,
   })
 }
-
-// Typed.js animation - Initialize after DOM is loaded
-document.addEventListener("DOMContentLoaded", () => {
-  // Wait a bit for libraries to load
-  setTimeout(() => {
-    const Typed = window.Typed
-    if (Typed) {
-      const multipleTextElement = document.querySelector(".multiple-text")
-      if (multipleTextElement) {
-        const typed = new Typed(".multiple-text", {
-          strings: ["Data Scientist", "Data Analyst", "ML Engineer", "BI Specialist"],
-          typeSpeed: 100,
-          backSpeed: 100,
-          backDelay: 1000,
-          loop: true,
-        })
-      }
-    } else {
-      // Fallback if Typed.js fails to load
-      const element = document.querySelector(".multiple-text")
-      if (element) {
-        const strings = ["Data Scientist", "Data Analyst", "ML Engineer", "BI Specialist"]
-        let currentIndex = 0
-
-        function typeText() {
-          element.textContent = strings[currentIndex]
-          currentIndex = (currentIndex + 1) % strings.length
-        }
-
-        typeText() // Initial text
-        setInterval(typeText, 3000) // Change every 3 seconds
-      }
-    }
-  }, 1000)
-})
 
 // Smooth scrolling for anchor links
 document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
@@ -186,14 +237,23 @@ if (contactForm) {
       return
     }
 
-    // Show success message
-    showNotification("Thank you for your message! I will get back to you soon.", "success")
+    // Build and open a mailto: link with the form data prefilled
+    const recipient = "ahmadfaiksetiawan@gmail.com"
+    const mailSubject = `[Portfolio] ${formObject.subject}`
+    const mailBody =
+      `Name: ${formObject.fullName}\n` +
+      `Email: ${formObject.email}\n` +
+      `Phone: ${formObject.phone || "-"}\n\n` +
+      `${formObject.message}`
+
+    const mailtoLink = `mailto:${recipient}?subject=${encodeURIComponent(mailSubject)}&body=${encodeURIComponent(mailBody)}`
+    window.location.href = mailtoLink
+
+    // Let the user know their email client is about to open
+    showNotification("Opening your email app to send the message...", "success")
 
     // Reset form
     this.reset()
-
-    // In a real application, you would send the data to a server
-    console.log("Form submitted:", formObject)
   })
 }
 
@@ -380,10 +440,7 @@ const throttledScroll = throttle(() => {
     header.classList.toggle("sticky", window.scrollY > 100)
   }
 
-  if (menuIcon && navbar) {
-    menuIcon.classList.remove("bx-x")
-    navbar.classList.remove("active")
-  }
+  closeMobileMenu()
 }, 16) // ~60fps
 
 window.addEventListener("scroll", throttledScroll)
@@ -397,7 +454,7 @@ window.addEventListener("load", () => {
     // Simulate loading progress
     let progress = 0
     const progressInterval = setInterval(() => {
-      progress += Math.random() * 15 + 5 // Random increment between 5-20
+      progress += Math.random() * 12 + 8 // Random increment between 5-20
       if (progress > 100) progress = 100
 
       loadingPercentage.textContent = Math.floor(progress) + "%"
@@ -412,10 +469,10 @@ window.addEventListener("load", () => {
           // Remove from DOM after transition
           setTimeout(() => {
             loadingScreen.style.display = "none"
-          }, 800)
-        }, 500)
+          }, 500)
+        }, 250)
       }
-    }, 100)
+    }, 80)
   }
 })
 
@@ -475,7 +532,7 @@ window.addEventListener("load", createParticles)
 
 // Skills Section Hover Effects
 document.addEventListener("DOMContentLoaded", () => {
-  const skillTags = document.querySelectorAll(".skill-tag")
+  const skillTags = document.querySelectorAll(".tag")
 
   skillTags.forEach((tag) => {
     tag.addEventListener("mouseenter", function () {
@@ -492,7 +549,6 @@ document.addEventListener("DOMContentLoaded", () => {
 function preloadImages() {
   const images = [
     "assets/images/profile.png",
-    "assets/images/about.png",
     "assets/images/projects/Stock-CLI.jpg",
     "assets/images/projects/Unilever_Forecasting.gif",
     "assets/images/projects/nyc_tlc.gif",
@@ -558,3 +614,15 @@ window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", (e)
     }
   }
 })
+
+// Handle theme toggle
+if (themeToggle && themeIcon) {
+  themeToggle.addEventListener("click", () => {
+    body.classList.toggle("light-mode")
+    if (themeIcon.classList.contains("bx-moon")) {
+      themeIcon.classList.replace("bx-moon", "bx-sun")
+    } else {
+      themeIcon.classList.replace("bx-sun", "bx-moon")
+    }
+  })
+}

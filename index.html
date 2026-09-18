@@ -1,714 +1,1013 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ahmad Faik's Portfolio - Data Analyst</title>
-    <meta name="description" content="Ahmad Faik's Portfolio - Data Scientist, Data Analyst, and Business Intelligence Specialist">
-    <meta name="keywords" content="data science, machine learning, data analysis, portfolio, Ahmad Faik">
-    <meta name="author" content="Ahmad Faik">
-    
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+    <title>Ahmad Faik Setiawan - Data Analyst | Portfolio</title>
+    <meta
+      name="description"
+      content="Portfolio of Ahmad Faik Setiawan, a Data Analyst specializing in data science, analytics, and business intelligence."
+    />
+    <meta
+      name="keywords"
+      content="data science, machine learning, data analysis, portfolio, Ahmad Faik"
+    />
+    <meta name="author" content="Ahmad Faik" />
+
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="assets/images/favicon.ico">
-    
+    <link rel="icon" type="image/x-icon" href="assets/images/favicon.ico" />
+
     <!-- External Libraries -->
-    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+    <link
+      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+
     <!-- Custom Styles -->
-    <link rel="stylesheet" href="assets/css/style.css">
-</head>
-<body>
+    <link rel="stylesheet" href="assets/css/style.css" />
+  </head>
+  <body>
+    <!--
+      Apply the saved/system theme before anything else is parsed.
+      This must run inline and synchronously, as the very first thing in
+      <body>, so the "light-mode" class lands before the browser's first
+      paint. Doing this from assets/js/script.js instead (which used to be
+      the only place it happened) caused a dark-mode flash on every load:
+      that file sits at the very end of <body>, after two external,
+      render-blocking <script> tags (ScrollReveal, Typed.js), so on a
+      light-themed visit the page would render with the default dark
+      :root colors for however long those CDN scripts took to fetch,
+      then flip to light once script.js finally ran.
+    -->
+    <script>
+      (function () {
+        try {
+          var savedTheme = localStorage.getItem("theme")
+          var systemPrefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches
+          if (savedTheme === "light" || (!savedTheme && !systemPrefersDark)) {
+            document.body.classList.add("light-mode")
+          }
+        } catch (e) {}
+      })()
+    </script>
     <!-- Enhanced Loading Screen -->
     <div class="loading-screen" id="loadingScreen">
-        <div class="floating-elements">
-            <div class="floating-element"></div>
-            <div class="floating-element"></div>
-            <div class="floating-element"></div>
-            <div class="floating-element"></div>
+      <div class="floating-elements">
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+      </div>
+
+      <div class="loading-container">
+        <div class="loading-logo">
+          <div class="logo-text">Ahmad<span class="highlight">Faik</span></div>
         </div>
-        
-        <div class="loading-container">
-            <div class="loading-logo">
-                <div class="logo-text">Ahmad<span class="highlight">Faik</span></div>
-            </div>
-            
-            <div class="loading-animation">
-                <div class="loading-ring"></div>
-                <div class="loading-ring"></div>
-                <div class="loading-ring"></div>
-            </div>
-            
-            <div class="data-bars">
-                <div class="data-bar"></div>
-                <div class="data-bar"></div>
-                <div class="data-bar"></div>
-                <div class="data-bar"></div>
-                <div class="data-bar"></div>
-                <div class="data-bar"></div>
-                <div class="data-bar"></div>
-                <div class="data-bar"></div>
-            </div>
-            
-            <div class="loading-text">Initializing Data Science Portfolio...</div>
-            
-            <div class="loading-progress">
-                <div class="progress-fill"></div>
-            </div>
-            
-            <div class="loading-percentage" id="loadingPercentage">0%</div>
+
+        <div class="loading-animation">
+          <div class="loading-ring"></div>
+          <div class="loading-ring"></div>
+          <div class="loading-ring"></div>
         </div>
+
+        <div class="data-bars">
+          <div class="data-bar"></div>
+          <div class="data-bar"></div>
+          <div class="data-bar"></div>
+          <div class="data-bar"></div>
+          <div class="data-bar"></div>
+          <div class="data-bar"></div>
+          <div class="data-bar"></div>
+          <div class="data-bar"></div>
+        </div>
+
+        <div class="loading-text">Initializing Portfolio...</div>
+
+        <div class="loading-progress">
+          <div class="progress-fill"></div>
+        </div>
+
+        <div class="loading-percentage" id="loadingPercentage">0%</div>
+      </div>
     </div>
 
     <!-- Header -->
-<header class="header">
-    <a href="#home" class="logo">Ahmad<span>Faik</span></a>
-
-    <div class="header-controls">
-        <!-- Navbar -->
-        <nav class="navbar">
-            <a href="#home" class="active">Home</a>
-            <a href="#about">About</a>
-            <a href="#education">Education</a>
-            <a href="#experience">Experience</a>
-            <a href="#skills">Skills</a>
-            <a href="#services">Services</a>
-            <a href="#portfolio">Portfolio</a>
-            <a href="#contact">Contact</a>
-        </nav>
-
-        <!-- Theme Toggle -->
-        <div class="theme-toggle" id="themeToggle">
-            <i class='bx bx-sun' id="themeIcon"></i>
+    <header class="header" id="header">
+      <nav class="navbar-pill">
+        <div class="nav-links" id="navLinks">
+          <a href="#home" class="nav-link active">Home</a>
+          <a href="#about" class="nav-link">About</a>
+          <a href="#experience" class="nav-link">Experience</a>
+          <a href="#portfolio" class="nav-link">Portfolio</a>
+          <a href="#contact" class="nav-link">Contact</a>
         </div>
-        
-        <!-- Mobile Menu Icon -->
-        <i class='bx bx-menu' id="menu-icon"></i>
-    </div>
-</header>
+        <div class="nav-controls">
+          <!-- Theme Toggle -->
+          <button
+            class="theme-toggle"
+            id="themeToggle"
+            aria-label="Toggle theme"
+          >
+            <i class="bx bx-sun" id="themeIcon"></i>
+          </button>
+
+          <!-- Mobile Menu Icon -->
+          <button
+            class="menu-toggle"
+            id="menuToggle"
+            aria-label="Toggle menu"
+            aria-expanded="false"
+            aria-controls="navLinks"
+          >
+            <i class="bx bx-menu" id="menuIcon"></i>
+          </button>
+        </div>
+      </nav>
+    </header>
 
     <!-- Home Section -->
     <section class="home" id="home">
-        <div class="home-content">
-            <h3>Hello, It's Me</h3>
-            <h1>Ahmad Faik Setiawan</h1>
-            <h3>And I'm a <span class="multiple-text">Data Scientist</span></h3>
-            <p>Passionate about turning raw data into impactful insights, I specialize in data science, data analysis, and business intelligence. With hands-on experience in Python, SQL, and various analytical tools, I aim to solve real-world problems through data-driven decision making.</p>
-            
-            <div class="social-media">
-                <a href="https://www.linkedin.com/in/ahmad-faik-5b64b0308/" target="_blank" aria-label="LinkedIn">
-                    <i class='bx bxl-linkedin'></i>
-                </a>
-                <a href="https://github.com/ahmadFaik" target="_blank" aria-label="GitHub">
-                    <i class='bx bxl-github'></i>
-                </a>
-                <a href="https://www.instagram.com/ahmadfaik_s/" target="_blank" aria-label="Instagram">
-                    <i class='bx bxl-instagram'></i>
-                </a>
-                <a href="https://x.com/uce_bae?s=21&t=B9qxQ1UpuKMVPyMBkok1lQ" target="_blank" aria-label="Twitter">
-                    <i class='bx bxl-twitter'></i>
-                </a>
-            </div>
-            
-            <a href="assets/documents/Ahmad_Faik_CV.pdf" download class="btn">Download CV</a>
+      <div class="home-content">
+        <h3>Hello, It's Me</h3>
+        <h1>Ahmad Faik Setiawan</h1>
+        <h3>
+          <span class="intro-text">And I'm a</span>
+          <span class="multiple-text">Data Analyst</span>
+        </h3>
+        <h3 class="hero-subtitle">
+          Transforming FMCG &amp; E-Commerce Data Into Actionable Business
+          Insights
+        </h3>
+
+        <div class="social-media">
+          <a
+            href="https://www.linkedin.com/in/ahmad-faik-5b64b0308/"
+            target="_blank"
+            aria-label="LinkedIn"
+          >
+            <i class="bx bxl-linkedin"></i>
+          </a>
+          <a
+            href="https://github.com/ahmadFaik"
+            target="_blank"
+            aria-label="GitHub"
+          >
+            <i class="bx bxl-github"></i>
+          </a>
+          <a
+            href="https://www.instagram.com/ahmadfaik_s/"
+            target="_blank"
+            aria-label="Instagram"
+          >
+            <i class="bx bxl-instagram"></i>
+          </a>
         </div>
 
-        <div class="home-img">
-            <div class="image-container">
-                <img src="assets/images/profile.png" alt="Ahmad Faik - Data Scientist">
-            </div>
+        <a href="assets/documents/Ahmad_Faik_CV.pdf" download class="btn"
+          >Download CV</a
+        >
+      </div>
+
+      <div class="home-img">
+        <div class="image-container">
+          <img
+            src="assets/images/profile.png"
+            alt="Ahmad Faik - Data Scientist"
+          />
         </div>
+      </div>
     </section>
 
-    <!-- About Section -->
-    <section class="about" id="about">
-        <div class="about-img">
-            <div class="image-frame">
-                <img src="assets/images/about.png" alt="About Ahmad Faik">
-            </div>
-        </div>
-
-        <div class="about-content">
-            <h2 class="heading">About <span>Me</span></h2>
-            <h3>Data Scientist & Analytics Expert</h3>
-            <p>I hold a degree in Islamic Law from Al-Azhar University, where I developed strong critical thinking, structured analysis, and problem-solving skills. Transitioning into the data field, I have strengthened my expertise through intensive training at Purwadhika Digital Technology School and a Data Analyst Bootcamp at Coding Studio. This diverse background equips me with both analytical rigor and ethical perspectives in approaching data-driven challenges.</p>
-            
-            <p>Currently, I serve as a Data Analyst Intern at Compas.co.id, a company specializing in market insights and e-commerce enablement. My work focuses on transforming complex FMCG and marketplace datasets into actionable business insights through data visualization, statistical modeling, and machine learning. I am passionate about leveraging data to optimize decision-making, identify market opportunities, and drive measurable business impact.</p>
-            
-            <div class="btn-box">
-                <a href="#education" class="btn">Read More</a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Education Section -->
-    <section class="education" id="education">
+    <!-- About + Education + Skills (Combined) -->
+    <!-- ABOUT SECTION -->
+    <section class="about-section" id="about">
+      <div class="about-container">
         <div class="section-header">
-            <h2 class="heading">Education</h2>
-            <p class="section-subtitle">My academic background and continuous learning journey.</p>
+          <h2 class="heading">About <span>Me</span></h2>
+          <p class="section-subtitle">
+            Get to know my background, education, and the skills I bring to
+            every project.
+          </p>
         </div>
 
-        <div class="timeline-container">
-            <div class="timeline-item" data-category="bachelor">
-                <div class="timeline-icon">
-                    <i class='bx bxs-graduation'></i>
-                </div>
-                <div class="timeline-content">
-                    <div class="timeline-header">
-                        <h3 class="timeline-title">Bachelor of Islamic Law</h3>
-                        <div class="timeline-date">
-                            <i class='bx bx-calendar-alt'></i>
-                            <span>2019 - 2023</span>
-                        </div>
-                    </div>
-                    <div class="timeline-location">
-                        <i class='bx bxs-map'></i>
-                        <span>Al-Azhar University, Cairo, Egypt</span>
-                    </div>
-                    <div class="timeline-description">
-                        <p>Graduated with a major in Islamic Law, developing strong analytical thinking, structured problem-solving, and ethical reasoning skills. This foundation has proven invaluable in approaching data science challenges with integrity and systematic methodology.</p>
-                    </div>
-                </div>
+        <!-- ── BIO ─────────────────────────────────────────── -->
+        <div class="block" id="bio-block">
+          <div class="bio-grid">
+            <!-- Avatar -->
+            <div class="bio-avatar">
+              <img src="assets/images/profile.png" alt="Ahmad Faik Setiawan" />
             </div>
 
-            <div class="timeline-item" data-category="bootcamp">
-                <div class="timeline-icon">
-                    <i class='bx bxs-brain'></i>
-                </div>
-                <div class="timeline-content">
-                    <div class="timeline-header">
-                        <h3 class="timeline-title">Data Analyst Bootcamp</h3>
-                        <div class="timeline-date">
-                            <i class='bx bx-calendar-alt'></i>
-                            <span>2024</span>
-                        </div>
-                    </div>
-                    <div class="timeline-location">
-                        <i class='bx bxs-map'></i>
-                        <span>Coding Studio, Jakarta, Indonesia</span>
-                    </div>
-                    <div class="timeline-description">
-                        <p>Completed an intensive Data Analytics bootcamp focused on Excel for Data Analysis, data cleaning, analysis, and business storytelling. Gained hands-on experience with real-world projects, applying Excel, Python, SQL, and visualization tools to transform complex datasets into clear, actionable insights for decision-making.</p>
-                    </div>
-                </div>
+            <!-- Text -->
+            <div class="bio-text">
+              <h3 class="bio-name">Ahmad Faik Setiawan</h3>
+              <p class="bio-role">Data Scientist &amp; Analyst</p>
+              <p class="bio-desc">
+                I’m a Data Analyst focused on transforming FMCG, marketplace,
+                and social media data into actionable business insights. With
+                experience in data analysis, market and competitor analysis,
+                reporting, dashboard development, and machine learning-based
+                forecasting, I use Python, SQL (Google BigQuery), Excel,
+                Tableau, and Looker Studio to solve business problems and
+                support data-driven decisions.
+              </p>
+              <p class="bio-desc bio-desc-2">
+                Data Analyst with hands-on experience analyzing FMCG,
+                e-commerce, and social media data to generate actionable
+                business insights. Proficient in Python, SQL (Google BigQuery),
+                and Excel for data processing and data analysis, with expertise
+                in visualization using Google Looker Studio and Tableau to
+                communicate insights effectively to stakeholders. Experienced in
+                leveraging AI agents to streamline reporting workflows and
+                improve efficiency. Currently developing machine learning–based
+                forecasting models to support FMCG market outlook and strategic
+                planning.
+              </p>
             </div>
-
-            <div class="timeline-item" data-category="bootcamp">
-                <div class="timeline-icon">
-                    <i class='bx bxs-brain'></i>
-                </div>
-                <div class="timeline-content">
-                    <div class="timeline-header">
-                        <h3 class="timeline-title">Data Science, Machine Learning, & AI</h3>
-                        <div class="timeline-date">
-                            <i class='bx bx-calendar-alt'></i>
-                            <span>2025</span>
-                        </div>
-                    </div>
-                    <div class="timeline-location">
-                        <i class='bx bxs-map'></i>
-                        <span>Purwadhika Digital Technology School, Jakarta, Indonesia</span>
-                    </div>
-                    <div class="timeline-description">
-                        <p>Intensive bootcamp program focusing on practical data science applications. Curriculum covers advanced Data Analysis and Wrangling with Python & SQL, comprehensive Machine Learning techniques including Regression, Classification, Clustering, and Time Series Analysis, plus hands-on experience with industry-standard visualization tools like Looker Studio and Tableau.</p>
-                    </div>
-                </div>
-            </div>
+          </div>
         </div>
+
+        <hr class="divider" />
+
+        <!-- ── EDUCATION ─────────────────────────────────── -->
+        <div class="block" id="education-block">
+          <h2 class="section-label">EDUCATION</h2>
+
+          <div class="edu-timeline">
+            <div class="edu-item">
+              <div class="edu-left">
+                <h3 class="edu-title">
+                  Data Science &amp; Machine Learning
+                </h3>
+                <p class="edu-institution">
+                  Purwadhika Digital Technology School
+                </p>
+              </div>
+              <div class="edu-right">
+                <div class="edu-dot edu-dot--active"></div>
+                <span class="edu-date">Mar 2025 – Jul 2025</span>
+              </div>
+            </div>
+            <!-- 
+            <div class="edu-item">
+              <div class="edu-left">
+                <h3 class="edu-title">Data Analyst Bootcamp</h3>
+                <p class="edu-institution">Coding Studio</p>
+              </div>
+              <div class="edu-right">
+                <div class="edu-dot"></div>
+                <span class="edu-date">Nov 2024 – Jan 2025</span>
+              </div>
+            </div> -->
+
+            <div class="edu-item">
+              <div class="edu-left">
+                <h3 class="edu-title">Bachelor of Islamic Law</h3>
+                <p class="edu-institution">
+                  Al-Azhar University · Cairo, Egypt
+                </p>
+              </div>
+              <div class="edu-right">
+                <div class="edu-dot"></div>
+                <span class="edu-date">Sep 2019 – Aug 2023</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <hr class="divider" />
+
+        <!-- ── SKILLS ─────────────────────────────────────── -->
+        <div class="block" id="skills-block">
+          <h2 class="section-label">SKILLS</h2>
+
+          <div class="skill-tags">
+            <span class="tag">Data Wrangling</span>
+            <span class="tag">Data Cleaning</span>
+            <span class="tag">Exploratory Data Analysis</span>
+            <span class="tag">Social Media Analysis</span>
+            <span class="tag">Data Visualization</span>
+            <span class="tag">Data Storytelling</span>
+            <span class="tag">AI Agents</span>
+            <span class="tag">Claude Code</span>
+            <span class="tag">Orca</span>
+            <span class="tag">Python</span>
+            <span class="tag">Machine Learning</span>
+            <span class="tag">Statistics</span>
+            <span class="tag">SQL</span>
+            <span class="tag">Google BigQuery</span>
+            <span class="tag">Microsoft Excel</span>
+            <span class="tag">Google Spreadsheets</span>
+            <span class="tag">Google Colab</span>
+            <span class="tag">Jupyter Notebook</span>
+            <span class="tag">n8n</span>
+            <span class="tag">Google Looker Studio</span>
+            <span class="tag">Tableau</span>
+            <span class="tag">Microsoft Power BI</span>
+            <span class="tag">Canva</span>
+            <span class="tag">Google Slide</span>
+            <span class="tag">Microsoft PowerPoint</span>
+            <span class="tag">Time Series Analysis</span>
+            <span class="tag">Analytical Thinking</span>
+            <span class="tag">Problem Solving</span>
+            <span class="tag">Attention to Detail</span>
+            <span class="tag">Stakeholder Communication</span>
+            <span class="tag">Team Collaboration</span>
+            <span class="tag">Strategic Project Management</span>
+          </div>
+        </div>
+
+        <hr class="divider" />
+
+        <!-- CERTIFICATIONS -->
+        <div class="block" id="cert-block">
+          <h2 class="section-label">CERTIFICATIONS</h2>
+
+          <div class="cert-grid">
+            <!-- Purwadhika Data Science -->
+            <div class="cert-grid-card">
+              <a
+                class="cert-grid-thumb"
+                href="assets/documents/purwadhika-data-science.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <img
+                  src="assets/images/sertificates/purwadhika-data-science.webp"
+                  alt="Data Science & Machine Learning Certificate"
+                  loading="lazy"
+                />
+              </a>
+
+              <div class="cert-grid-body">
+                <h3 class="cert-grid-title">Data Science &amp; Machine Learning</h3>
+                <p class="cert-grid-issuer">
+                  Purwadhika Digital Technology School
+                </p>
+                <p class="cert-grid-date">July 2025</p>
+
+                <a
+                  class="cert-grid-btn"
+                  href="assets/documents/purwadhika-data-science.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <i class="bx bx-file-blank"></i> View Certificate
+                </a>
+              </div>
+            </div>
+
+            <!-- Microsoft Excel -->
+            <div class="cert-grid-card">
+              <a
+                class="cert-grid-thumb"
+                href="assets/documents/microsoft-data-analytics.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <img
+                  src="assets/images/sertificates/microsoft-data-analytics.webp"
+                  alt="Excel for Data Analytics Certificate"
+                  loading="lazy"
+                />
+              </a>
+
+              <div class="cert-grid-body">
+                <h3 class="cert-grid-title">Excel for Data Analytics</h3>
+                <p class="cert-grid-issuer">Microsoft</p>
+                <p class="cert-grid-date">March 2026</p>
+
+                <a
+                  class="cert-grid-btn"
+                  href="assets/documents/microsoft-data-analytics.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <i class="bx bx-file-blank"></i> View Certificate
+                </a>
+              </div>
+            </div>
+
+            <!-- Database SQL -->
+            <div class="cert-grid-card">
+              <a
+                class="cert-grid-thumb"
+                href="assets/documents/database-sql.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <img
+                  src="assets/images/sertificates/database-sql.webp"
+                  alt="Fundamentals of Database SQL Certificate"
+                  loading="lazy"
+                />
+              </a>
+
+              <div class="cert-grid-body">
+                <h3 class="cert-grid-title">Fundamentals of Database SQL</h3>
+                <p class="cert-grid-issuer">Coding Studio</p>
+                <p class="cert-grid-date">January 2025</p>
+
+                <a
+                  class="cert-grid-btn"
+                  href="assets/documents/database-sql.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <i class="bx bx-file-blank"></i> View Certificate
+                </a>
+              </div>
+            </div>
+
+            <!-- Python Data Analytics -->
+            <div class="cert-grid-card">
+              <a
+                class="cert-grid-thumb"
+                href="assets/documents/python-data-analytics.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <img
+                  src="assets/images/sertificates/python-data-analytics.webp"
+                  alt="Python for Data Analytics Certificate"
+                  loading="lazy"
+                />
+              </a>
+
+              <div class="cert-grid-body">
+                <h3 class="cert-grid-title">Python for Data Analytics</h3>
+                <p class="cert-grid-issuer">Coding Studio</p>
+                <p class="cert-grid-date">January 2025</p>
+
+                <a
+                  class="cert-grid-btn"
+                  href="assets/documents/python-data-analytics.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <i class="bx bx-file-blank"></i> View Certificate
+                </a>
+              </div>
+            </div>
+
+            <!-- Microsoft Excel -->
+            <div class="cert-grid-card">
+              <a
+                class="cert-grid-thumb"
+                href="assets/documents/excel.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <img
+                  src="assets/images/sertificates/excel.webp"
+                  alt="Microsoft Excel Certificate"
+                  loading="lazy"
+                />
+              </a>
+
+              <div class="cert-grid-body">
+                <h3 class="cert-grid-title">Microsoft Excel</h3>
+                <p class="cert-grid-issuer">Coding Studio</p>
+                <p class="cert-grid-date">August 2025</p>
+
+                <a
+                  class="cert-grid-btn"
+                  href="assets/documents/excel.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <i class="bx bx-file-blank"></i> View Certificate
+                </a>
+              </div>
+            </div>
+
+            <!-- Mini Course Data Analytics -->
+            <div class="cert-grid-card">
+              <a
+                class="cert-grid-thumb"
+                href="assets/documents/mini-course-data-analytics.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <img
+                  src="assets/images/sertificates/mini-course-data-analytics.webp"
+                  alt="Mini Course Data Analytics Certificate"
+                  loading="lazy"
+                />
+              </a>
+
+              <div class="cert-grid-body">
+                <h3 class="cert-grid-title">Mini Course: Data Analytics</h3>
+                <p class="cert-grid-issuer">RevoU</p>
+                <p class="cert-grid-date">March 2026</p>
+
+                <a
+                  class="cert-grid-btn"
+                  href="assets/documents/mini-course-data-analytics.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <i class="bx bx-file-blank"></i> View Certificate
+                </a>
+              </div>
+            </div>
+
+            <!-- Best Student -->
+            <div class="cert-grid-card">
+              <a
+                class="cert-grid-thumb"
+                href="assets/documents/best-student-data-science.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <img
+                  src="assets/images/sertificates/best-student-data-science.webp"
+                  alt="Best Student in Data Science Program Certificate"
+                  loading="lazy"
+                />
+              </a>
+
+              <div class="cert-grid-body">
+                <h3 class="cert-grid-title">
+                  Best Student in Data Science Program
+                </h3>
+                <p class="cert-grid-issuer">
+                  Purwadhika Digital Technology School
+                </p>
+                <p class="cert-grid-date">April 2026</p>
+
+                <a
+                  class="cert-grid-btn"
+                  href="assets/documents/best-student-data-science.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <i class="bx bx-file-blank"></i> View Certificate
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
 
     <!-- Work Experience Section -->
     <section class="experience" id="experience">
-        <div class="section-header">
-            <h2 class="heading">Work Experience</h2>
-            <p class="section-subtitle">My professional journey and the companies I've worked with.</p>
+      <div class="section-header">
+        <h2 class="heading">Work <span>Experience</span></h2>
+        <p class="section-subtitle">
+          My professional journey and the companies I've worked with.
+        </p>
+      </div>
+
+      <div class="timeline-container">
+        <div class="timeline-item" data-category="Data Analyst">
+          <div class="timeline-icon">
+            <i class="bx bx-briefcase"></i>
+          </div>
+          <div class="timeline-content">
+            <div class="timeline-header">
+              <h3 class="timeline-title">Data Analyst</h3>
+              <div class="timeline-date">
+                <i class="bx bx-calendar-alt"></i>
+                <span>June 2025 - Present</span>
+              </div>
+            </div>
+            <div class="timeline-company">
+              <span>Compas.co.id</span>
+              <div class="timeline-location">
+                <i class="bx bxs-map"></i>
+                <span>Jakarta, Indonesia</span>
+              </div>
+            </div>
+            <div class="timeline-description">
+              <ul>
+                <li>
+                  Executed end-to-end data analytics projects for 30+ FMCG
+                  clients using SQL (Google BigQuery) and Excel, including
+                  social media data analysis across 5+ brands to support market
+                  research and business strategy.
+                </li>
+                <li>
+                  Produced and delivered 70+ analytical reports and dashboards
+                  using Google Looker Studio and Google Slides, translating FMCG
+                  data into actionable insights for data-driven decision-making.
+                </li>
+                <li>
+                  Optimized recurring reporting workflows using AI agents,
+                  reducing manual processing time by 50% and improving output
+                  consistency.
+                </li>
+                <li>
+                  Built machine learning–based forecasting models with 85–95%
+                  accuracy to support FMCG market outlook and strategic planning
+                </li>
+              </ul>
+            </div>
+          </div>
         </div>
-
-        <div class="timeline-container">
-            <div class="timeline-item" data-category="internship">
-                <div class="timeline-icon">
-                    <i class='bx bx-briefcase'></i>
-                </div>
-                <div class="timeline-content">
-                    <div class="timeline-header">
-                        <h3 class="timeline-title">Data Analyst</h3>
-                        <div class="timeline-date">
-                            <i class='bx bx-calendar-alt'></i>
-                            <span>June 2025 - Present</span>
-                        </div>
-                    </div>
-                    <div class="timeline-company">
-                        <span>Compas.co.id</span>
-                        <div class="timeline-location">
-                            <i class='bx bxs-map'></i>
-                            <span>Jakarta, Indonesia</span>
-                        </div>
-                        <span class="timeline-type">Internship</span>
-                    </div>
-                    <div class="timeline-description">
-                        <ul>
-                            <li>Assisted in data analysis projects for leading clients such as Danone, Indocare, Bintang Toedjoe, and Scarlett.</li>
-                            <li>Focused on customer behavior, sales trends, competitor landscape, and business performance, delivering actionable insights that supported strategic decision-making.</li>
-                            <li>Transformed complex datasets into clear business recommendations through visualization and reporting, strengthening market insights and e-commerce enablement initiatives.</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Skills Section -->
-    <section class="skills" id="skills">
-        <!-- Adding floating elements like home section -->
-        <div class="floating-elements">
-            <div class="floating-element"></div>
-            <div class="floating-element"></div>
-            <div class="floating-element"></div>
-            <div class="floating-element"></div>
-        </div>
-        
-        <h2 class="heading">My <span>Skills</span></h2>
-        
-        <div class="skills-grid">
-            <!-- Data Analysis & Programming -->
-            <div class="skill-category">
-                <div class="category-header">
-                    <div class="category-icon">
-                        <i class='bx bx-code-alt'></i>
-                    </div>
-                    <h3>Data Analysis & Programming</h3>
-                </div>
-                <div class="skill-tags">
-                    <span class="skill-tag">Python</span>
-                    <span class="skill-tag">SQL</span>
-                    <span class="skill-tag">Google BigQuery</span>
-                    <span class="skill-tag">Excel for Data Analysis</span>
-                    <span class="skill-tag">Data Cleaning & Wrangling</span>
-                    <span class="skill-tag">Statistical Analysis</span>
-                    <span class="skill-tag">Machine Learning</span>
-                    <span class="skill-tag">Time Series Analysis</span>
-                    <span class="skill-tag">Data Mining</span>
-                    <span class="skill-tag">Predictive Modeling</span>
-                </div>
-            </div>
-
-            <!-- Data Visualization & BI -->
-            <div class="skill-category">
-                <div class="category-header">
-                    <div class="category-icon">
-                        <i class='bx bx-brain'></i>
-                    </div>
-                    <h3>Data Visualization & BI</h3>
-                </div>
-                <div class="skill-tags">
-                    <span class="skill-tag">Looker Studio</span>
-                    <span class="skill-tag">Tableau</span>
-                    <span class="skill-tag">Data Storytelling</span>
-                    <span class="skill-tag">Dashboard Design</span>
-                    <span class="skill-tag">Report Creation</span>
-                    <span class="skill-tag">Interactive Visualizations</span>
-                    <span class="skill-tag">KPI Development</span>
-                </div>
-            </div>
-
-            <!-- Soft Skills -->
-            <div class="skill-category">
-                <div class="category-header">
-                    <div class="category-icon">
-                        <i class='bx bx-user-voice'></i>
-                    </div>
-                    <h3>Soft Skills</h3>
-                </div>
-                <div class="skill-tags">
-                    <span class="skill-tag">Analytical Thinking</span>
-                    <span class="skill-tag">Problem Solving</span>
-                    <span class="skill-tag">Attention to Detail</span>
-                    <span class="skill-tag">Critical Thinking</span>
-                    <span class="skill-tag">Communication</span>
-                    <span class="skill-tag">Collaboration</span>
-                    <span class="skill-tag">Adaptability</span>
-                    <span class="skill-tag">Time Management</span>
-                </div>
-            </div>
-
-            <!-- Tools & Platforms -->
-            <div class="skill-category">
-                <div class="category-header">
-                    <div class="category-icon">
-                        <i class='bx bx-folder-open'></i>
-                    </div>
-                    <h3>Tools & Platforms</h3>
-                </div>
-                <div class="skill-tags">
-                    <span class="skill-tag">Google Workspace</span>
-                    <span class="skill-tag">Microsoft Office Suite</span>
-                    <span class="skill-tag">Canva</span>
-                    <span class="skill-tag">Google Slide</span>
-                    <span class="skill-tag">Jupyter Notebooks</span>
-                    <span class="skill-tag">Git & GitHub</span>
-                    <span class="skill-tag">Docker</span>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Services Section -->
-    <section class="services" id="services">
-        <h2 class="heading">My <span>Services</span></h2>
-
-        <div class="services-container">
-            <div class="services-box">
-                <i class='bx bx-bar-chart-alt-2'></i>
-                <h3>Data Science</h3>
-                <p>End-to-end data science solutions including predictive modeling, machine learning implementation, and statistical analysis. I transform complex data into strategic insights that drive business growth and innovation.</p>
-                <a href="#portfolio" class="btn">View Projects</a>
-            </div>
-
-            <div class="services-box">
-                <i class='bx bx-line-chart'></i>
-                <h3>Data Analysis</h3>
-                <p>Comprehensive data analysis services including exploratory data analysis, statistical testing, and trend identification. I help organizations uncover hidden patterns and make data-driven decisions with confidence.</p>
-                <a href="#portfolio" class="btn">View Projects</a>
-            </div>
-
-            <div class="services-box">
-                <i class='bx bx-trending-up'></i>
-                <h3>Business Intelligence</h3>
-                <p>Interactive dashboards and strategic reporting solutions that provide real-time insights. I create BI systems that empower teams with the clarity and information they need to succeed in competitive markets.</p>
-                <a href="#portfolio" class="btn">View Projects</a>
-            </div>
-        </div>
+      </div>
     </section>
 
     <!-- Portfolio Section -->
     <section class="portfolio" id="portfolio">
-        <!-- Adding floating elements like home section -->
-        <div class="floating-elements">
-            <div class="floating-element"></div>
-            <div class="floating-element"></div>
-            <div class="floating-element"></div>
-            <div class="floating-element"></div>
+      <!-- Adding floating elements like home section -->
+      <div class="floating-elements">
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+      </div>
+
+      <!-- Updated section title and added subtitle -->
+      <div class="portfolio-header">
+        <h2 class="heading">My <span>Projects</span></h2>
+        <p class="portfolio-subtitle">
+          Here are my recent data analytics, data science, and machine learning
+          projects. Each project demonstrates different aspects of my technical
+          and analytical capabilities.
+        </p>
+      </div>
+
+      <!-- Added category filter tabs -->
+      <div class="portfolio-filters">
+        <button class="filter-btn active" data-filter="all">All</button>
+        <button class="filter-btn" data-filter="analytics">
+          Data Analytics
+        </button>
+        <button class="filter-btn" data-filter="machine-learning">
+          Data Science
+        </button>
+        <button class="filter-btn" data-filter="data-engineering">
+          Data Engineering
+        </button>
+      </div>
+
+      <!-- Updated portfolio container with new card design -->
+      <div class="portfolio-container">
+        <div
+          class="portfolio-card"
+          data-category="data-engineering analytics machine-learning"
+        >
+          <div class="card-image">
+            <img
+              src="assets/images/projects/Customer Churn Predictor.gif"
+              alt="E-Commerce Customer Churn Prediction"
+            />
+          </div>
+          <div class="card-content">
+            <h3 class="card-title">E-Commerce Customer Churn Prediction</h3>
+            <p class="card-description">
+              A smart customer retention tool that analyzes behavioral patterns
+              and predicts churn risk in real time, empowering e-commerce teams
+              to proactively save high-value customers.
+            </p>
+            <div class="tech-stack">
+              <span class="tech-tag">Python</span>
+              <span class="tech-tag">Streamlit</span>
+              <span class="tech-tag">Machine Learning</span>
+              <span class="tech-tag">LightGBM</span>
+            </div>
+            <div class="card-actions">
+              <a
+                href="https://github.com/ahmadFaik/E-Commerce-Customer-Churn-Prediction"
+                target="_blank"
+                class="btn-secondary"
+              >
+                <i class="bx bxl-github"></i> Code
+              </a>
+              <a
+                href="assets/documents/customer-churn-prediction.pdf"
+                target="_blank"
+                class="btn-primary"
+              >
+                <i class="bx bxs-file-pdf"></i> Report
+              </a>
+            </div>
+          </div>
         </div>
-        
-        <!-- Updated section title and added subtitle -->
-        <div class="portfolio-header">
-            <h2 class="heading">My <span>Projects</span></h2>
-            <p class="portfolio-subtitle">Here are my recent data science, analytics, and machine learning projects. Each project demonstrates different aspects of my technical and analytical capabilities.</p>
+
+        <div class="portfolio-card" data-category="data-engineering">
+          <div class="card-image">
+            <img
+              src="assets/images/projects/Stock-CLI.jpg"
+              alt="Stock CLI Project"
+            />
+          </div>
+          <div class="card-content">
+            <h3 class="card-title">Stock Management CLI</h3>
+            <p class="card-description">
+              A command-line application for efficient stock data management
+              with full CRUD functionality, built using Python and SQL for
+              robust data handling.
+            </p>
+            <div class="tech-stack">
+              <span class="tech-tag">Python</span>
+              <span class="tech-tag">SQL</span>
+              <span class="tech-tag">CLI</span>
+              <span class="tech-tag">CRUD</span>
+            </div>
+            <div class="card-actions">
+              <a
+                href="https://github.com/ahmadFaik/STOCK-CLI"
+                target="_blank"
+                class="btn-secondary"
+              >
+                <i class="bx bxl-github"></i> Code
+              </a>
+              <a
+                href="assets/documents/stock-data-management-system.pdf"
+                target="_blank"
+                class="btn-primary"
+              >
+                <i class="bx bxs-file-pdf"></i> Report
+              </a>
+            </div>
+          </div>
         </div>
 
-        <!-- Added category filter tabs -->
-        <div class="portfolio-filters">
-            <button class="filter-btn active" data-filter="all">All</button>
-            <button class="filter-btn" data-filter="analytics">Analytics</button>
-            <button class="filter-btn" data-filter="machine-learning">Machine Learning</button>
-            <button class="filter-btn" data-filter="data-engineering">Data Engineering</button>
+        <div class="portfolio-card" data-category="machine-learning">
+          <div class="card-image">
+            <img
+              src="assets/images/projects/Capstone 3.jpg"
+              alt="Hotel Cancellation Prediction"
+            />
+          </div>
+          <div class="card-content">
+            <h3 class="card-title">Hotel Cancellation Prediction</h3>
+            <p class="card-description">
+              This project aims to build a machine learning model to predict
+              hotel booking cancellations. By analyzing historical booking data,
+              the model assists hotels in optimizing overbooking strategies and
+              improving revenue management.
+            </p>
+            <div class="tech-stack">
+              <span class="tech-tag">Python</span>
+              <span class="tech-tag">Machine Learning</span>
+              <span class="tech-tag">XGBoost</span>
+            </div>
+            <div class="card-actions">
+              <a
+                href="https://github.com/ahmadFaik/Hotel-Cancellation-Predictor"
+                target="_blank"
+                class="btn-secondary"
+              >
+                <i class="bx bxl-github"></i> Code
+              </a>
+              <a
+                href="assets/documents/hotel-cancellation-prediction.pdf"
+                target="_blank"
+                class="btn-primary"
+              >
+                <i class="bx bxs-file-pdf"></i> Report
+              </a>
+            </div>
+          </div>
         </div>
 
-        <!-- Updated portfolio container with new card design -->
-        <div class="portfolio-container">
-            <div class="portfolio-card" data-category="data-engineering analytics">
-                <div class="card-image">
-                    <img src="assets/images/projects/Internship Report.gif" alt="Stock CLI Project">
-                </div>
-                <div class="card-content">
-                    <h3 class="card-title">Internship Report</h3>
-                    <p class="card-description">A comprehensive report on my internship experience, highlighting key achievements, challenges, and lessons learned.</p>
-                    <div class="tech-stack">
-                        <span class="tech-tag">Python</span>
-                        <span class="tech-tag">Google BigQuery</span>
-                        <span class="tech-tag">Google Looker Studio</span>
-                        <span class="tech-tag">Google Cloud Platform</span>
-                        <span class="tech-tag">Google Sheets</span>
-                        <span class="tech-tag">Microsoft Excel</span>
-                        <span class="tech-tag">n8n</span>
-                    </div>
-                    <div class="card-actions">
-                        <a href="https://github.com/ahmadFaik" target="_blank" class="btn-secondary">
-                            <i class='bx bxl-github'></i> Code
-                        </a>
-                        <a href="#" class="btn-primary">
-                            <i class='bx bx-link-external'></i> Demo
-                        </a>
-                    </div>
-                </div>
+        <div class="portfolio-card" data-category="machine-learning analytics">
+          <div class="card-image">
+            <img
+              src="assets/images/projects/Unilever_Forecasting.gif"
+              alt="Unilever Stock Forecasting"
+            />
+          </div>
+          <div class="card-content">
+            <h3 class="card-title">Unilever Stock Forecasting</h3>
+            <p class="card-description">
+              Advanced time series analysis using Prophet to forecast UNVR stock
+              prices. Includes trend analysis, seasonality detection, and
+              investment decision-making insights with interactive
+              visualizations.
+            </p>
+            <div class="tech-stack">
+              <span class="tech-tag">Python</span>
+              <span class="tech-tag">Plotly</span>
+              <span class="tech-tag">Prophet</span>
+              <span class="tech-tag">Time Series Analysis</span>
+              <span class="tech-tag">Forecasting</span>
             </div>
-
-            <div class="portfolio-card" data-category="data-engineering">
-                <div class="card-image">
-                    <img src="assets/images/projects/Stock-CLI.jpg" alt="Stock CLI Project">
-                </div>
-                <div class="card-content">
-                    <h3 class="card-title">Stock Management CLI</h3>
-                    <p class="card-description">A command-line application for efficient stock data management with full CRUD functionality, built using Python and SQLite for robust data handling.</p>
-                    <div class="tech-stack">
-                        <span class="tech-tag">Python</span>
-                        <span class="tech-tag">SQLite</span>
-                        <span class="tech-tag">CLI</span>
-                        <span class="tech-tag">CRUD</span>
-                    </div>
-                    <div class="card-actions">
-                        <a href="https://github.com/ahmadFaik/STOCK-CLI" target="_blank" class="btn-secondary">
-                            <i class='bx bxl-github'></i> Code
-                        </a>
-                        <a href="#" class="btn-primary">
-                            <i class='bx bx-link-external'></i> Demo
-                        </a>
-                    </div>
-                </div>
+            <div class="card-actions">
+              <a
+                href="https://github.com/ahmadFaik/UNVR-Stock-Forecasting"
+                target="_blank"
+                class="btn-secondary"
+              >
+                <i class="bx bxl-github"></i> Code
+              </a>
+              <a
+                href="assets/documents/unilever-stock-forecasting.pdf"
+                target="_blank"
+                class="btn-primary"
+              >
+                <i class="bx bxs-file-pdf"></i> Report
+              </a>
             </div>
-
-            <div class="portfolio-card" data-category="machine-learning">
-                <div class="card-image">
-                    <img src="assets/images/projects/Capstone 3.jpg" alt="Hotel Cancellation Prediction">
-                </div>
-                <div class="card-content">
-                    <h3 class="card-title">Hotel Cancellation Prediction</h3>
-                    <p class="card-description">This project aims to build a machine learning model to predict hotel booking cancellations. By analyzing historical booking data, the model assists hotels in optimizing overbooking strategies and improving revenue management.</p>
-                    <div class="tech-stack">
-                        <span class="tech-tag">Python</span>
-                        <span class="tech-tag">Pandas</span>
-                        <span class="tech-tag">Scikit-learn</span>
-                        <span class="tech-tag">XGBoost</span>
-                        <span class="tech-tag">SMOTE</span>
-                        <span class="tech-tag">Matplotlib</span>
-                        <span class="tech-tag">Seaborn</span>
-                        <span class="tech-tag">Feature Engineering</span>
-                        <span class="tech-tag">Model Evaluation</span>
-                    </div>
-                    <div class="card-actions">
-                        <a href="https://github.com/ahmadFaik/Hotel-Cancellation-Predictor" target="_blank" class="btn-secondary">
-                            <i class='bx bxl-github'></i> Code
-                        </a>
-                        <a href="#" class="btn-primary">
-                            <i class='bx bx-link-external'></i> Demo
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="portfolio-card" data-category="machine-learning analytics">
-                <div class="card-image">
-                    <img src="assets/images/projects/Unilever_Forecasting.gif" alt="Unilever Stock Forecasting">
-                </div>
-                <div class="card-content">
-                    <h3 class="card-title">Unilever Stock Forecasting</h3>
-                    <p class="card-description">Advanced time series analysis using Prophet to forecast UNVR stock prices. Includes trend analysis, seasonality detection, and investment decision-making insights with interactive visualizations.</p>
-                    <div class="tech-stack">
-                        <span class="tech-tag">Python</span>
-                            <span class="tech-tag">Pandas</span>
-                            <span class="tech-tag">NumPy</span>
-                            <span class="tech-tag">Matplotlib</span>
-                            <span class="tech-tag">Plotly</span>
-                            <span class="tech-tag">Prophet</span>
-                            <span class="tech-tag">Time Series Analysis</span>
-                            <span class="tech-tag">Forecasting</span>
-                            <span class="tech-tag">Financial Analysis</span>
-                    </div>
-                    <div class="card-actions">
-                        <a href="https://github.com/ahmadFaik/UNVR-Stock-Forecasting" target="_blank" class="btn-secondary">
-                            <i class='bx bxl-github'></i> Code
-                        </a>
-                        <a href="#" class="btn-primary">
-                            <i class='bx bx-link-external'></i> Demo
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="portfolio-card" data-category="analytics">
-                <div class="card-image">
-                    <img src="assets/images/projects/nyc_tlc.gif" alt="NYC Green Taxi Analysis">
-                </div>
-                <div class="card-content">
-                    <h3 class="card-title">NYC Green Taxi Analysis</h3>
-                    <p class="card-description">Comprehensive analysis of NYC green taxi trip data to optimize operational efficiency and revenue generation. Includes geospatial analysis, demand forecasting, and data-driven recommendations for taxi operations.</p>
-                    <div class="tech-stack">
-                        <span class="tech-tag">Python</span>
-                        <span class="tech-tag">Pandas</span>
-                        <span class="tech-tag">NumPy</span>
-                        <span class="tech-tag">GeoPandas</span>
-                        <span class="tech-tag">Folium</span>
-                        <span class="tech-tag">Matplotlib</span>
-                        <span class="tech-tag">Seaborn</span>
-                        <span class="tech-tag">Tableau</span>
-                        <span class="tech-tag">Geospatial Analysis</span>
-                        <span class="tech-tag">Operational Efficiency</span>
-                    </div>
-                    <div class="card-actions">
-                        <a href="https://github.com/ahmadFaik/Green-Taxi-Analysis" target="_blank" class="btn-secondary">
-                            <i class='bx bxl-github'></i> Code
-                        </a>
-                        <a href="#" class="btn-primary">
-                            <i class='bx bx-link-external'></i> Demo
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="portfolio-card" data-category="analytics research">
-                <div class="card-image">
-                    <img src="assets/images/projects/The Look.gif" alt="E-Commerce Retention Analysis">
-                </div>
-                <div class="card-content">
-                    <h3 class="card-title">E-Commerce Retention Analysis</h3>
-                    <p class="card-description">Customer retention analysis for e-commerce platform identifying key loyalty drivers and strategies to boost retention. Includes cohort analysis, RFM segmentation, and actionable business recommendations.</p>
-                    <div class="tech-stack">
-                        <span class="tech-tag">Python</span>
-                        <span class="tech-tag">Pandas</span>
-                        <span class="tech-tag">NumPy</span>
-                        <span class="tech-tag">Matplotlib</span>
-                        <span class="tech-tag">Seaborn</span>
-                        <span class="tech-tag">Plotly</span>
-                        <span class="tech-tag">Google Looker Studio</span>
-                        <span class="tech-tag">Cohort Analysis</span>
-                        <span class="tech-tag">RFM Analysis</span>
-                        <span class="tech-tag">Churn Analysis</span>
-                        <span class="tech-tag">Customer Segmentation</span>
-                        <span class="tech-tag">Business Intelligence</span>
-                    </div>
-                    <div class="card-actions">
-                        <a href="https://github.com/ahmadFaik/E-Commerce-Retention-Analysis" target="_blank" class="btn-secondary">
-                            <i class='bx bxl-github'></i> Code
-                        </a>
-                        <a href="#" class="btn-primary">
-                            <i class='bx bx-link-external'></i> Demo
-                        </a>
-                    </div>
-                </div>
-            </div>
+          </div>
         </div>
+
+        <div class="portfolio-card" data-category="analytics">
+          <div class="card-image">
+            <img
+              src="assets/images/projects/nyc_tlc.gif"
+              alt="NYC Green Taxi Analysis"
+            />
+          </div>
+          <div class="card-content">
+            <h3 class="card-title">NYC Green Taxi Analysis</h3>
+            <p class="card-description">
+              Comprehensive analysis of NYC green taxi trip data to optimize
+              operational efficiency and revenue generation. Includes geospatial
+              analysis, demand forecasting, and data-driven recommendations for
+              taxi operations.
+            </p>
+            <div class="tech-stack">
+              <span class="tech-tag">Python</span>
+              <span class="tech-tag">GeoJSON</span>
+              <span class="tech-tag">Tableau</span>
+              <span class="tech-tag">Geospatial Analysis</span>
+              <span class="tech-tag">Operational Efficiency</span>
+            </div>
+            <div class="card-actions">
+              <a
+                href="https://github.com/ahmadFaik/Green-Taxi-Analysis"
+                target="_blank"
+                class="btn-secondary"
+              >
+                <i class="bx bxl-github"></i> Code
+              </a>
+              <a
+                href="assets/documents/nyc-green-taxi-analysis.pdf"
+                target="_blank"
+                class="btn-primary"
+              >
+                <i class="bx bxs-file-pdf"></i> Report
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="portfolio-card" data-category="analytics research">
+          <div class="card-image">
+            <img
+              src="assets/images/projects/The Look.gif"
+              alt="E-Commerce Retention Analysis"
+            />
+          </div>
+          <div class="card-content">
+            <h3 class="card-title">E-Commerce Retention Analysis</h3>
+            <p class="card-description">
+              Customer retention analysis for e-commerce platform identifying
+              key loyalty drivers and strategies to boost retention. Includes
+              cohort analysis, RFM segmentation, and actionable business
+              recommendations.
+            </p>
+            <div class="tech-stack">
+              <span class="tech-tag">Python</span>
+              <span class="tech-tag">Plotly</span>
+              <span class="tech-tag">Google Looker Studio</span>
+              <span class="tech-tag">Cohort Analysis</span>
+              <span class="tech-tag">RFM Analysis</span>
+              <span class="tech-tag">Churn Analysis</span>
+              <span class="tech-tag">Customer Segmentation</span>
+            </div>
+            <div class="card-actions">
+              <a
+                href="https://github.com/ahmadFaik/E-Commerce-Retention-Analysis"
+                target="_blank"
+                class="btn-secondary"
+              >
+                <i class="bx bxl-github"></i> Code
+              </a>
+              <a
+                href="assets/documents/ecommerce-retention-analysis.pdf"
+                target="_blank"
+                class="btn-primary"
+              >
+                <i class="bx bxs-file-pdf"></i> Report
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
 
     <!-- Contact Section -->
     <section class="contact" id="contact">
-        <h2 class="heading">Contact <span>Me</span></h2>
+      <h2 class="heading">Contact <span>Me</span></h2>
 
-        <form action="#" class="contact-form" id="contactForm">
-            <div class="input-box">
-                <input type="text" name="fullName" placeholder="Full Name" required>
-                <input type="email" name="email" placeholder="Email Address" required>
-            </div>
-            <div class="input-box">
-                <input type="tel" name="phone" placeholder="Mobile Number">
-                <input type="text" name="subject" placeholder="Email Subject" required>
-            </div>
-            <textarea name="message" cols="30" rows="10" placeholder="Your Message" required></textarea>
-            <input type="submit" value="Send Message" class="btn">
-        </form>
-
-        <div class="contact-info">
-            <div class="info-box">
-                <i class='bx bx-envelope'></i>
-                <h3>Email</h3>
-                <p>faiquc29@gmail.com</p>
-            </div>
-            <div class="info-box">
-                <i class='bx bx-phone'></i>
-                <h3>Phone</h3>
-                <p>+62 123 456 7890</p>
-            </div>
-            <div class="info-box">
-                <i class='bx bx-map'></i>
-                <h3>Location</h3>
-                <p>Jakarta, Indonesia</p>
-            </div>
+      <form action="#" class="contact-form" id="contactForm">
+        <div class="input-box">
+          <input type="text" name="fullName" placeholder="Full Name" required />
+          <input
+            type="email"
+            name="email"
+            placeholder="Email Address"
+            required
+          />
         </div>
+        <div class="input-box">
+          <input type="tel" name="phone" placeholder="Mobile Number" />
+          <input
+            type="text"
+            name="subject"
+            placeholder="Email Subject"
+            required
+          />
+        </div>
+        <textarea
+          name="message"
+          cols="30"
+          rows="10"
+          placeholder="Your Message"
+          required
+        ></textarea>
+        <input type="submit" value="Send Message" class="btn" />
+      </form>
+
+      <div class="contact-info">
+        <a href="mailto:ahmadfaiksetiawan@gmail.com" target="_blank">
+          <div class="info-box">
+            <i class="bx bx-envelope"></i>
+            <h3>Email</h3>
+            <p>ahmadfaiksetiawan@gmail.com</p>
+          </div>
+        </a>
+        <a href="https://wa.me/6285846982059" target="_blank">
+          <div class="info-box">
+            <i class="bx bx-phone"></i>
+            <h3>Phone</h3>
+            <p>+62 858 4692 059</p>
+          </div>
+        </a>
+        <div class="info-box">
+          <i class="bx bx-map"></i>
+          <h3>Location</h3>
+          <p>Jakarta, Indonesia</p>
+        </div>
+      </div>
     </section>
 
     <!-- Enhanced Footer -->
     <footer class="footer">
-        <!-- Adding floating elements like home section -->
-        <div class="floating-elements">
-            <div class="floating-element"></div>
-            <div class="floating-element"></div>
-            <div class="floating-element"></div>
-            <div class="floating-element"></div>
+      <!-- Adding floating elements like home section -->
+      <div class="floating-elements">
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+      </div>
+
+      <div class="footer-container">
+        <div class="footer-row">
+          <div class="footer-social">
+            <a
+              href="https://www.linkedin.com/in/ahmad-faik-5b64b0308/"
+              target="_blank"
+              aria-label="LinkedIn"
+            >
+              <i class="bx bxl-linkedin"></i>
+            </a>
+            <a
+              href="https://github.com/ahmadFaik"
+              target="_blank"
+              aria-label="GitHub"
+            >
+              <i class="bx bxl-github"></i>
+            </a>
+            <a
+              href="https://www.instagram.com/ahmadfaik_s/"
+              target="_blank"
+              aria-label="Instagram"
+            >
+              <i class="bx bxl-instagram"></i>
+            </a>
+          </div>
+
+          <p class="footer-title">Transforming data into strategic insights</p>
+
+          <a href="#home" class="back-to-top" aria-label="Back to top">
+            <i class="bx bx-up-arrow-alt"></i>
+            <span>Back to Top</span>
+          </a>
         </div>
-        
-        <div class="footer-container">
-            <!-- Footer Top -->
-            <div class="footer-top">
-                <div class="footer-brand">
-                    <h3 class="footer-logo">Ahmad<span>Faik</span></h3>
-                    <p class="footer-description">
-                        Transforming data into strategic insights. Passionate about machine learning, 
-                        data analysis, and creating impactful solutions for real-world challenges.
-                    </p>
-                    <div class="footer-social">
-                        <a href="https://www.linkedin.com/in/ahmad-faik-5b64b0308/" target="_blank" aria-label="LinkedIn">
-                            <i class='bx bxl-linkedin'></i>
-                        </a>
-                        <a href="https://github.com/ahmadFaik" target="_blank" aria-label="GitHub">
-                            <i class='bx bxl-github'></i>
-                        </a>
-                        <a href="https://www.instagram.com/ahmadfaik_s/" target="_blank" aria-label="Instagram">
-                            <i class='bx bxl-instagram'></i>
-                        </a>
-                        <a href="https://x.com/uce_bae?s=21&t=B9qxQ1UpuKMVPyMBkok1lQ" target="_blank" aria-label="Twitter">
-                            <i class='bx bxl-twitter'></i>
-                        </a>
-                    </div>
-                </div>
+      </div>
 
-                <div class="footer-links">
-                    <div class="footer-column">
-                        <h4>Quick Links</h4>
-                        <ul>
-                            <li><a href="#home">Home</a></li>
-                            <li><a href="#about">About</a></li>
-                            <li><a href="#education">Education</a></li>
-                            <li><a href="#experience">Experience</a></li>
-                        </ul>
-                    </div>
-
-                    <div class="footer-column">
-                        <h4>Services</h4>
-                        <ul>
-                            <li><a href="#services">Data Science</a></li>
-                            <li><a href="#services">Data Analysis</a></li>
-                            <li><a href="#services">Business Intelligence</a></li>
-                        </ul>
-                    </div>
-
-                    <div class="footer-column">
-                        <h4>Resources</h4>
-                        <ul>
-                            <li><a href="#skills">Skills</a></li>
-                            <li><a href="assets/documents/Ahmad_Faik_CV.pdf" download>Download CV</a></li>
-                            <li><a href="#contact">Get In Touch</a></li>
-                            <li><a href="#portfolio">View Projects</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Footer Bottom -->
-            <div class="footer-bottom">
-                <div class="footer-text">
-                    <p>&copy; 2025 Ahmad Faik Setiawan. All Rights Reserved.</p>
-                    <p class="footer-subtitle">Crafted with passion for data science excellence</p>
-                </div>
-
-                <div class="footer-actions">
-                    <a href="#home" class="back-to-top" aria-label="Back to top">
-                        <i class='bx bx-up-arrow-alt'></i>
-                        <span>Back to Top</span>
-                    </a>
-                </div>
-            </div>
-        </div>
-
-        <!-- Footer Background Elements -->
-        <div class="footer-bg-elements">
-            <div class="footer-shape footer-shape-1"></div>
-            <div class="footer-shape footer-shape-2"></div>
-            <div class="footer-shape footer-shape-3"></div>
-        </div>
+      <!-- Footer Background Elements -->
+      <div class="footer-bg-elements">
+        <div class="footer-shape footer-shape-1"></div>
+        <div class="footer-shape footer-shape-2"></div>
+        <div class="footer-shape footer-shape-3"></div>
+      </div>
     </footer>
 
     <!-- Scripts -->
     <script src="https://unpkg.com/scrollreveal"></script>
     <script src="https://unpkg.com/typed.js@2.1.0/dist/typed.umd.js"></script>
     <script src="assets/js/script.js"></script>
-</body>
+  </body>
 </html>
