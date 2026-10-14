@@ -446,7 +446,14 @@ const throttledScroll = throttle(() => {
 window.addEventListener("scroll", throttledScroll)
 
 // Enhanced Loading Screen with Progress Animation
-window.addEventListener("load", () => {
+//
+// This must run on DOMContentLoaded, NOT window "load". The "load" event only
+// fires after EVERY resource (including the multi-megabyte project GIFs) has
+// finished downloading, so gating the counter on it left the screen frozen at
+// "0%" for the whole download, then ran a fake 0→100% animation AFTER the page
+// was already usable. Starting on DOMContentLoaded lets the loading screen
+// come and go as soon as the DOM is parsed; the images stream in behind it.
+document.addEventListener("DOMContentLoaded", () => {
   const loadingScreen = document.getElementById("loadingScreen")
   const loadingPercentage = document.getElementById("loadingPercentage")
 
@@ -546,13 +553,14 @@ document.addEventListener("DOMContentLoaded", () => {
 })
 
 // Preloader for images
+//
+// Only preload small, above-the-fold assets. The project GIFs are several MB
+// each (one is ~50MB); force-fetching them here with new Image() would eagerly
+// pull tens of MB on first paint and defeat the loading="lazy" on their <img>
+// tags, which is a big part of why the page felt slow to open.
 function preloadImages() {
   const images = [
     "assets/images/profile.png",
-    "assets/images/projects/Stock-CLI.jpg",
-    "assets/images/projects/Unilever_Forecasting.gif",
-    "assets/images/projects/nyc_tlc.gif",
-    "assets/images/projects/The Look.gif",
   ]
 
   images.forEach((src) => {
